@@ -22,13 +22,14 @@ int main(int argc, char* argv[]) {
                     return 2;
                 }
             } else {
-                std::cerr << "Flag -p is not followed by file name" << std::endl;
+                std::cerr << "Flag -f is not followed by file name" << std::endl;
                 return 1;
             }
             i++;
         }
     }
     int ans;
+    
     try {
     ans = total(fname);
     }
@@ -36,6 +37,10 @@ int main(int argc, char* argv[]) {
         std::cerr << "Passed file contains unexpected input: expecting int" << std::endl;
         return 2;
     }
-    std::cout << ans << std::endl;
+    std::cout << "Total: " << ans << std::endl;
+    
+    ans = first_duplicate(fname);
+    std::cout << "First Duplicate: " << ans << std::endl;
+    
     return 0;
 }

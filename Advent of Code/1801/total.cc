@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "total.h"
+#include "bst.h"
 using namespace std;
 
 unique_ptr<vector<int>> parse(const string &fname){
@@ -33,4 +34,19 @@ int total(unique_ptr<vector<int>> pv) {
 
 int total(const string &fname) {
     return total(parse(fname));
+}
+
+int first_duplicate(const string &fname) {
+    auto nums = parse(fname);
+    int n = 0;
+    vector<int> dups;
+    BST sums(n);
+    while(dups.empty()) {
+        for (auto i : *nums) {
+            n += i;
+            if (sums.in_tree(n)) {dups.emplace_back(n);}
+            else {sums.add_to_tree(n);}
+        }
+    }
+    return dups[0];
 }

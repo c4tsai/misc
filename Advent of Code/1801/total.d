@@ -1,1 +1,1 @@
-total.o: total.cc total.h
+total.o: total.cc total.h bst.h
