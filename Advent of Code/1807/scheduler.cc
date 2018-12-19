@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <sstream>
+#include <algorithm>
 
 #include "dictionary.h"
 #include "scheduler.h"
@@ -42,7 +43,8 @@ unique_ptr<Dictionary> make_dictionary(const vector<pair<string, string>> &words
     return dict;
 }
 
-unique_ptr<vector<string>> get_order(Dictionary dict) {
+unique_ptr<vector<string>> get_order(Dictionary dic) {
+    Dictionary dict = dic;
     unique_ptr<vector<string>> out = make_unique<vector<string>>();
     string s;
     while (dict.size() > 0) {
@@ -51,4 +53,38 @@ unique_ptr<vector<string>> get_order(Dictionary dict) {
         dict.del(s);
     }
     return out;
+}
+
+int tasktime(const string &s, const bool speed) {
+    char c = s[0];
+    int out = c - 'A' + 1;
+    if (!speed) {out += 60;}
+    return out;
+}
+
+pair<string, int> elves(Dictionary dic, unsigned int numelves, bool fast) {
+    Dictionary dict = dic;
+    vector<pair<int, string>> time{};
+    int curtime = 0;
+    string s, ord = "";
+    while (dict.size() > 0) {
+        vector<string> task = dict.get_top_lvl();
+        while(time.size() < numelves && task.size() > 0) {
+            s = task.front();
+            int t = tasktime(s, fast);
+            bool assigned = false;
+            for (auto q : time) {
+                if (q.second == s) {assigned = true;}
+            }
+            if (!assigned) {time.emplace_back(pair<int, string>(curtime + t, s));}
+            task.erase(task.begin());
+        }
+        sort(time.begin(), time.end(), [&] (auto i, auto j) {return (i.first < j.first);});
+        auto donetask = time.front();
+        curtime = donetask.first;
+        ord += donetask.second;
+        dict.del(donetask.second);
+        time.erase(time.begin());
+    }
+    return pair<string, int>(ord, curtime);
 }
