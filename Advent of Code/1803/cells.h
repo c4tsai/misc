@@ -41,7 +41,7 @@ class Board {
     virtual ~Board();
     
     void add_id(int id, int x, int y);
-    std::pair<int, int> get_dims();
+    std::pair<int, int> get_dims() const;
     Cell* get_cell(int x, int y) const;
     Cell* get_cell(const std::pair<int, int> &p) const;
 };

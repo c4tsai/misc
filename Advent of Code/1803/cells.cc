@@ -52,18 +52,18 @@ Board::Board(int length, int height): length{length}, height{height} {
 Board::~Board() {}
 
 void Board::add_id(int id, int x, int y) {
-    board->at(x-1).at(y-1)->add_id(id);
+    board->at(x).at(y)->add_id(id);
 }
 
-pair<int, int> Board::get_dims() {
+pair<int, int> Board::get_dims() const {
     return pair<int,int>(length, height);
 }
 
 Cell* Board::get_cell(int x, int y) const {
-    return &*(board->at(x-1).at(y-1));
+    return &*(board->at(x).at(y));
 }
 
 Cell* Board::get_cell(const pair<int, int> &p) const {
     int x = p.first; int y = p.second;
-    return &*(board->at(x-1).at(y-1));
+    return &*(board->at(x).at(y));
 }

@@ -80,14 +80,15 @@ unique_ptr<vector<Job>> make_jobs(vector<Listing> &lst, Board &board) {
 }
 
 int count_conflicts(const Board&b) {
+  cout << "Entering count_conflicts" << endl;
     int len = b.get_dims().first;
     int hgt = b.get_dims().second;
     int out = 0;
     for (int i = 0; i < len; i++) {
         for (int j = 0; j < hgt; j++) {
-            if (b.get_cell(i+1,j+1)->count_claims() > 1) {out++;}
+	  cout << "(" << i << ", " << j << ")" << endl;
+            if (b.get_cell(i,j)->count_claims() > 1) {out++;}
         }
     }
     return out;
-}
 }

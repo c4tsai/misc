@@ -23,6 +23,7 @@ int str2int(const std::string &str);
 std::unique_ptr<std::vector<Listing>> parse(const std::string &fname);
 
 class Job final : public PT {
+ public:
     Job(const Listing &lst);
     ~Job();
     bool is_conflict(const Board &b) const;
