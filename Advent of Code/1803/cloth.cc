@@ -92,3 +92,4 @@ int count_conflicts(const Board&b) {
     }
     return out;
 }
+

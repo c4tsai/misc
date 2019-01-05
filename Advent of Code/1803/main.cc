@@ -9,6 +9,7 @@
 int main(int argc, char* argv[]) {
     std::stringstream ss;
     std::string fname = "input.txt";
+    bool p1 = true;
     for (int i = 1; i < argc; i++) {
         std::string s = argv[i]; 
         if (s == "-f") {
@@ -27,6 +28,9 @@ int main(int argc, char* argv[]) {
             }
             i++;
         }
+	if (s == "-p") {
+	  p1 = false;
+	}
     }
     
     int ans;
@@ -35,8 +39,18 @@ int main(int argc, char* argv[]) {
         std::unique_ptr<Board> board = std::make_unique<Board> (10000,10000);
         auto lst = parse(fname);
         std::unique_ptr<std::vector<Job>> jobs = make_jobs(*lst, *board);
+	if (p1) {
         ans = count_conflicts(*board);
-    }
+        std::cout << "Total: " << ans << std::endl;
+	} else {
+	  for (auto q : *jobs) {
+	    bool temp = q.is_conflict(*board);
+	    if (!temp) {
+	      std::cout << "No Conflicts: " << q.get_id() << std::endl;
+	    }
+	  }
+	}
+    }	
     catch(int e) {
         switch(e) {
             case 2 : {
@@ -49,7 +63,6 @@ int main(int argc, char* argv[]) {
             }
         }
     }
-    std::cout << "Total: " << ans << std::endl;
     
     /*
     ans = first_no_conflict(fname);
