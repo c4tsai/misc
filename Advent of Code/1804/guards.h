@@ -33,7 +33,7 @@ class Guard {
     ~Guard();
     void addsleep(const Date &start, const Date &wake);
     int total_sleep() const;
-    int get_most_asleep() const;
+    std::pair<int,int> get_most_asleep() const;
     int get_id() const;
     friend std::ostream& operator<<(std::ostream &os, const Guard &guard);
 };
@@ -56,5 +56,7 @@ std::vector<Event> parse(const std::string &fname);
 std::vector<Guard> make_guardlist(const std::vector<Event> &events);
 
 std::pair<int, int> findmax(const std::vector<Guard> &glist);
+
+std::pair<int, int> findmaxasleepmin(const std::vector<Guard> &glist);
 
 #endif

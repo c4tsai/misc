@@ -71,7 +71,7 @@ int Guard::total_sleep() const {
     return out;
 }
 
-int Guard::get_most_asleep() const {
+pair<int,int> Guard::get_most_asleep() const {
     int ans =-1;
     int n = 0;
     for (int i = 0; i < 61; i++) {
@@ -80,7 +80,7 @@ int Guard::get_most_asleep() const {
             ans = i;
         }
     }
-    return ans;
+    return pair<int,int>(n, ans);
 }
 
 int Guard::get_id() const {
@@ -166,6 +166,17 @@ pair<int, int> findmax(const vector<Guard> &glist) {
     for (auto q : glist) {
         if (q.total_sleep() > max) {
             max = q.total_sleep();
+            id = q.get_id();
+        }
+    }
+    return pair<int, int>(id, max);
+}
+
+pair<int, int> findmaxasleepmin(const vector<Guard> &glist) {
+    int id, max = -1;
+    for (auto q : glist) {
+        if (q.get_most_asleep().first > max) {
+            max = q.get_most_asleep().first;
             id = q.get_id();
         }
     }

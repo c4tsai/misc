@@ -44,16 +44,25 @@ int main(int argc, char* argv[]) {
     
     std::cout << "Finding Max Total Sleep" << std::endl;
     std::pair<int, int> result = findmax(*glist);
-    
     id = result.first;
     
     for(auto q : *glist) {
         if (q.get_id() == id) {
-            max = q.get_most_asleep();
+            max = q.get_most_asleep().second;
             std::cout << q << std::endl;
         }
     }
     
+    std::cout << id << " * " << max << " = " << id*max << std::endl;
+    
+    std::cout << "Finding Most Often Asleep Min" << std::endl;
+    result = findmaxasleepmin(*glist); id = result.first; max = result.second;
+    for(auto q : *glist) {
+        if (q.get_id() == id) {
+            max = q.get_most_asleep().second;
+            std::cout << q << std::endl;
+        }
+    }
     std::cout << id << " * " << max << " = " << id*max << std::endl;
     
     return 0;
