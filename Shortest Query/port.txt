@@ -1,33 +1,37 @@
-incarnam zaap
-temple of scriptures zaap
-ecaflipus portal
-trool fair zaap
-astrub center zaap
-astrub sewers zaap
-tainela zaap
-amakna zaap
-bonta zaap
-brakmar zaap
-sufokia zaap
-rok island huppermage school zaap
-wild estate zaap
-calamar island zaap
-sadida kingdom zaap
-kelba zaap
-messaround monastery zaap
-forfut zaap
-bilbiza zaap
-shhhudoku kingdom zaap
-shustft crust shusnitch reef zaap
-ice floe zaap
-harebourg castle zaap
-ohymi desert zaap
-inglorium portal
-srambad portal
-enurado portal
-moon zaap
-zinit beach zaap
-wild beach silo
-schnek cave silo
-zinit lower slope silo
-tower of the brotherhood mineral tower silo
+miscellaneous,incarnam zaap
+miscellaneous,temple of scriptures zaap
+miscellaneous,ecaflipus portal
+miscellaneous,trool fair zaap
+astrub,astrub center zaap
+astrub,astrub sewers zaap
+astrub,tainela zaap
+amakna,amakna zaap
+bonta,bonta zaap
+brakmar,brakmar zaap
+sufokia,sufokia zaap
+rok island,huppermage school zaap
+wild estate,wild estate zaap
+calamar island,calamar island zaap
+sadida kingdom,sadida kingdom zaap
+kelba,kelba zaap
+monk island,messaround monastery zaap
+forfut,forfut zaap
+bilbiza,bilbiza zaap
+shhhudoku kingdom,shhhudoku kingdom zaap
+shustuft crust,shusnitch reef zaap
+chillberg island,ice floe zaap
+chillberg island,harebourg castle zaap
+ohwymi,ohwymi desert zaap
+wabbit island,wabbit island zaap
+divine dimensions,inglorium portal
+divine dimensions,srambad portal
+divine dimensions,enurado portal
+divine dimensions,past xelorium portal
+divine dimensions,present xelorium portal
+moon,moon zaap
+zinit,zinit beach zaap
+zinit,wild beach silo
+zinit,schnek cave silo
+zinit,lower slope silo
+zinit,upper slope silo
+tower of the brotherhood,mineral tower silo

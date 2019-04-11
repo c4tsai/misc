@@ -1,0 +1,8 @@
+wabbit tunnels,wabbit island station
+the fungopole,ohwymi station
+moon island tunnels,moon station
+sufokia mine,sufokia station
+ruins of the asparah gorge,frigost station
+brakmar mine,brakmar station
+bonta mine,bonta station
+amakna mine,amakna station

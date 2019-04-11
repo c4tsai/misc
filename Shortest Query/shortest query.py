@@ -58,7 +58,7 @@ class MySuffixTree(object):
                 tmp = "Edges to: "
                 for entry in curnode.edge:
                     tmp += entry.ref
-                    tmp += " "
+                    tmp += ", "
                 print(tmp)
                 # Check the current node's existing edges
                 preflen = list(map(lambda x: self.prefixmatchlen(curstr, x), curnode.edge))
@@ -66,7 +66,7 @@ class MySuffixTree(object):
                 nextind = max(range(len(preflen)), key = preflen.__getitem__) 
                 if preflen[nextind] == 0: # none of the edges matches any character
                     print("No match")
-                    curlen += 1 # Make this the entire remaining string for a more traditional suffix trie
+                    curlen += 1
                     curnode.edge.append(self.Node(curstr[0]))
                     nextnode = curnode.edge[-1]
                     nextnode.labels.append([curword, i, curlen])
@@ -102,17 +102,22 @@ class MySuffixTree(object):
         out += str(self.root)
         return out
     
-def finduniqquery(tree):
+def finduniqquery(tree, ban = "\n"):
     query = []
     for entry in tree.words:
         query.append(None)
     queue = [tree.root]
     while None in query:
         curnode = queue.pop(0)
-        if len(curnode.labels) == 1:
-            curlab = curnode.labels[0]
-            if (query[curlab[0]] is None) or (len(query[curlab[0]]) > curlab[2]):
-                query[curlab[0]] = (tree.words[curlab[0]])[curlab[1]:curlab[1]+curlab[2]]
+        if ban in curnode.ref:
+            None
+        elif (len(curnode.labels) > 0) and \
+             (len(set(map(lambda x: x[0], curnode.labels))) == 1):
+            curlab = min(curnode.labels, key = lambda x: x[2])
+            if (query[curlab[0]] is None) or \
+               (len(query[curlab[0]]) > (curlab[2]-len(curnode.ref)+1)):
+                query[curlab[0]] = (tree.words[curlab[0]])[curlab[1]:
+                      curlab[1]+curlab[2]-len(curnode.ref)+1]
         else:
             queue += curnode.edge
     out = {}
@@ -124,6 +129,8 @@ def createtreefromfile(fname):
     f = open(fname, "r")
     out = MySuffixTree()
     for x in f:
+        if x[-1] == '\n':
+            x = x[:-1]
         out.addword(x)
     return out
 
