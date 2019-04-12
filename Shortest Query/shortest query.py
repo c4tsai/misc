@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Apr 10 16:26:20 2019
-This reads a file containing a list of strings, and will write to a file which shows the minimum
-unique substring that identifies the string.
+This reads a file containing a list of strings, and will output a dict which 
+shows the minimum unique substring that identifies the string.
 """
 import copy
 
 class MySuffixTree(object):
     class Node(object):
         def __init__(self, refs):
-            self.ref = refs
-            self.labels = []
-            self.edge = []
+            self.ref = refs  # The string this node represents
+            self.labels = [] # Where we can find this string [word#, start position, length]
+            self.edge = []   # Which nodes this node links to
             
         def __str__(self):
             out = "{\nRef: %s, Labels: " % (self.ref)
@@ -29,6 +29,7 @@ class MySuffixTree(object):
             return out
     
     def prefixmatchlen(self, s, node):
+        # Helper function that returns how good a match your string is to a node
         out = 0
         tar = node.ref
         for i in range(len(node.ref)):
@@ -41,9 +42,10 @@ class MySuffixTree(object):
                 break
         return out
     
-    def __init__(self):
+    def __init__(self, compact = False):
         self.root = self.Node("")
         self.words = []
+        self.compact = compact
     
     def addword(self,s):
         self.words.append(s)
@@ -66,14 +68,23 @@ class MySuffixTree(object):
                 nextind = max(range(len(preflen)), key = preflen.__getitem__) 
                 if preflen[nextind] == 0: # none of the edges matches any character
                     print("No match")
-                    curlen += 1
-                    curnode.edge.append(self.Node(curstr[0]))
-                    nextnode = curnode.edge[-1]
-                    nextnode.labels.append([curword, i, curlen])
-                    curnode = nextnode
-                    curstr = curstr[1:]
+                    if self.compact: # tabulate substrings as well
+                        curlen += len(curstr)
+                        curnode.edge.append(self.Node(curstr))
+                        nextnode = curnode.edge[-1]
+                        nextnode.labels.append([curword, i, curlen])
+                        curnode = nextnode
+                        curstr = ""
+                    else: # tabulate every letter seperately
+                        curlen += 1
+                        curnode.edge.append(self.Node(curstr[0]))
+                        nextnode = curnode.edge[-1]
+                        nextnode.labels.append([curword, i, curlen])
+                        curnode = nextnode
+                        curstr = curstr[1:]
                 elif preflen[nextind] == len((curnode.edge[nextind]).ref): # perfect match found
-                    print("Perfect Match: %s" % ((curnode.edge[nextind]).ref))
+                    print("Perfect Match: %s" % 
+                          ((curnode.edge[nextind]).ref))
                     curnode = curnode.edge[nextind] # move to next node
                     curlen += len(curnode.ref)
                     curnode.labels.append([curword, i, curlen])
@@ -81,7 +92,8 @@ class MySuffixTree(object):
                 else: # imperfect match found
                     curnode = curnode.edge[nextind]
                     matchlen = preflen[nextind]
-                    print("Imperfect Match: %s out of %s" % (curnode.ref[:matchlen], curnode.ref))
+                    print("Imperfect Match: %s out of %s" % 
+                          (curnode.ref[:matchlen], curnode.ref))
                     splitnode = self.Node(curnode.ref[matchlen:])
                     splitnode.labels = copy.deepcopy(curnode.labels)
                     splitnode.edge = curnode.edge
@@ -103,24 +115,27 @@ class MySuffixTree(object):
         return out
     
 def finduniqquery(tree, ban = "\n"):
-    query = []
+    query = [] # initialize the table
     for entry in tree.words:
         query.append(None)
-    queue = [tree.root]
-    while None in query:
+    queue = [tree.root] # start walking down the tree until we find what we want
+    while None in query: # stop when we find at least one entry each
         curnode = queue.pop(0)
-        if ban in curnode.ref:
+        if ban in curnode.ref: # skip nodes which contains banned characters
             None
         elif (len(curnode.labels) > 0) and \
              (len(set(map(lambda x: x[0], curnode.labels))) == 1):
-            curlab = min(curnode.labels, key = lambda x: x[2])
-            if (query[curlab[0]] is None) or \
-               (len(query[curlab[0]]) > (curlab[2]-len(curnode.ref)+1)):
+        # If there is at least one label in the node and all the labels point to the same word
+            curlab = min(curnode.labels, key = lambda x: x[2]) # find the shortest
+            if (query[curlab[0]] is None) or (len(query[curlab[0]]) > \
+                (curlab[2]-len(curnode.ref)+1)):
+                # and if the shortest is shorter than what we have
                 query[curlab[0]] = (tree.words[curlab[0]])[curlab[1]:
                       curlab[1]+curlab[2]-len(curnode.ref)+1]
-        else:
-            queue += curnode.edge
-    out = {}
+                # add everything before the node and the first letter of this node
+        else: # otherwise since this node points to more than one word it is not unique
+            queue += curnode.edge # we look at the node's children
+    out = {} # We make a dictionary to return
     for i in zip(tree.words, query):
         out[i[0]] = i[1]
     return out
