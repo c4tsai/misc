@@ -114,15 +114,16 @@ class MySuffixTree(object):
         out += str(self.root)
         return out
     
-def finduniqquery(tree, ban = "\n"):
+def finduniqquery(tree, ban = "\n"): # Note: this only works in compact = False for now
     query = [] # initialize the table
     for entry in tree.words:
         query.append(None)
     queue = [tree.root] # start walking down the tree until we find what we want
     while None in query: # stop when we find at least one entry each
         curnode = queue.pop(0)
-        if ban in curnode.ref: # skip nodes which contains banned characters
-            None
+        print("Current node %s with labels %s" % (curnode.ref, curnode.labels))
+        if len(curnode.ref) > 0 and (ban == curnode.ref[0]): # skip nodes which starts with banned characters
+            None # For compact = True this takes care of cases where node is ",s"
         elif (len(curnode.labels) > 0) and \
              (len(set(map(lambda x: x[0], curnode.labels))) == 1):
         # If there is at least one label in the node and all the labels point to the same word
@@ -130,19 +131,23 @@ def finduniqquery(tree, ban = "\n"):
             if (query[curlab[0]] is None) or (len(query[curlab[0]]) > \
                 (curlab[2]-len(curnode.ref)+1)):
                 # and if the shortest is shorter than what we have
+                tmp = query[curlab[0]]
                 query[curlab[0]] = (tree.words[curlab[0]])[curlab[1]:
                       curlab[1]+curlab[2]-len(curnode.ref)+1]
                 # add everything before the node and the first letter of this node
+                print("Changing index %s from %s to %s" % (curlab[0], tmp, query[curlab[0]]))
         else: # otherwise since this node points to more than one word it is not unique
-            queue += curnode.edge # we look at the node's children
+            if ban not in curnode.ref: # if the banned character is not in the rest of ref
+                queue += curnode.edge # we look at the node's children
+                print("Added %s nodes to queue" % (len(curnode.edge)))
     out = {} # We make a dictionary to return
     for i in zip(tree.words, query):
         out[i[0]] = i[1]
     return out
 
-def createtreefromfile(fname):
+def createtreefromfile(fname, compact = False):
     f = open(fname, "r")
-    out = MySuffixTree()
+    out = MySuffixTree(compact)
     for x in f:
         if x[-1] == '\n':
             x = x[:-1]
