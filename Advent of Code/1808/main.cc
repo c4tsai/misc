@@ -31,8 +31,8 @@ int main(int argc, char* argv[]) {
             i++;
         }
     }
-    auto q = std::make_unique<std::queue<int>>(parse(fname));
-    auto t = std::make_unique<Treenode>(Treenode(&(*q)));
+    auto q = std::queue<int>(parse(fname));
+    auto t = std::make_unique<Treenode>(Treenode(q));
     
     int out = t->summetadata();
     

@@ -7,13 +7,13 @@
 #include <queue>
 
 class Treenode {
-    std::vector<std::unique_ptr<Treenode>> children;
+    std::vector<Treenode*> children;
     std::vector<int> metadata;
     int numchildren;
     int nummetadata;
     
   public:
-    Treenode(std::queue<int> *inputs);
+    Treenode(std::queue<int> &inputs);
     ~Treenode();
     
     std::vector<int> getmetadata() const;
