@@ -14,15 +14,21 @@ Treenode::Treenode(queue<int> &inputs): children{vector<Treenode*>()},
     metadata{vector<int>()}, numchildren{0}, nummetadata{0} {
         numchildren = inputs.front();
         inputs.pop();
+        cout << "Numchildren: " << numchildren;
         nummetadata = inputs.front();
         inputs.pop();
+        cout << "; Nummetadata: " << nummetadata << endl;
         while (children.size() < numchildren) {
             children.push_back(new Treenode(inputs));
         }
+        cout << "# of children added: " << children.size() << endl;
+        cout << "Adding Metadata: ";
         while (metadata.size() < nummetadata) {
             metadata.emplace_back(inputs.front());
+            cout << metadata.back() << " ";
             inputs.pop();
         }
+        cout << endl;
 }
 
 Treenode::~Treenode() {
@@ -31,16 +37,32 @@ Treenode::~Treenode() {
     }
 }
 
-vector<int> Treenode::getmetadata() const {
-    return metadata;
+// May have to write copy constructors
+
+int Treenode::getmetadata() const {
+    cout << "Nummetadata: " << nummetadata << endl;
+    int out = 0;
+    if (nummetadata > 0) {
+        for (auto x : metadata) {
+            cout << x << endl;
+            out += x;
+        }
+    } 
+    return out;
 }
 
 int Treenode::summetadata() {
-    vector<int> temp = getmetadata();
-    for (auto x : children) {
-        temp.emplace_back(x->summetadata());
+    int out = getmetadata();
+    if (numchildren > 0) {
+        for (auto x : children) {
+            cout << "Entering subtree" << endl;
+            if (x != nullptr) {
+                int tmp = x->summetadata();
+                cout << tmp << endl;
+                out += tmp;
+            }
+        }
     }
-    int out = accumulate(temp.begin(), temp.end(), 0);
     return out;
 }
 

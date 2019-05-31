@@ -16,7 +16,7 @@ class Treenode {
     Treenode(std::queue<int> &inputs);
     ~Treenode();
     
-    std::vector<int> getmetadata() const;
+    int getmetadata() const;
     int summetadata();
 };
 
