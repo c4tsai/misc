@@ -26,7 +26,7 @@ def parse(nam = fnames):
     for i in range(len(tmp)):
         for j in range(len(tmp[i])):
             tmp[i][j] = " / ".join(tmp[i][j])
-        tmp[i].insert(0,str(i))
+        tmp[i].insert(0,"\t" + str(i))
         tmp[i] = " & ".join(tmp[i]) + r' \\ \hline'
     tmp = "\n".join(tmp)
     print(tmp)
